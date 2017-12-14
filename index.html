@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Some Tools</title>
+</head>
+<body>
+    <!-- css样式初始化 -->
+    body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,dd,input{
+        margin:0;
+        padding:0;
+    }
+    body{
+        font-size:12px;
+        font-family:"微软雅黑";
+        background: #f6f6f6;
+    }
+    ul,li{
+        list-style:none;
+    }
+    a{
+        text-decoration:none;
+        color: #000;
+    }
+    img{
+        display:block;
+        border:0;
+    }
+    .clearFix:after{
+        content: ".";
+        overflow: hidden;
+        visibility: hidden;
+        height: 0;
+        clear:both;
+        display: block;
+    }
+    <!-- IOS 屏幕尺寸对照表 -->
+    http://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions
+    <!-- JS 获取移动端动态像素比 -->
+    <script> //console.log(window.devicePixelRatio);
+        var pixelRatio = 1 / window.devicePixelRatio; document.write('<meta name="viewport" content="width=devicewidth,initial-scale='+ pixelRatio +',minimum-scale='+ pixelRatio +',maximum-scale='+ pixelRatio +',user-scalable=no" />')
+        var html=document.getElementsByTagName("html")[0];
+        var pageWidth=html.getBoundingClientRect().width; 
+        html.style.fontSize=pageWidth/16+"px";
+    </script>
+    <!-- React项目创建 -->
+    npm install -g create-react-app
+    create-react-app 项目名字
+    <!-- Webpack 打包 -->
+    //全局安装
+    npm install -g webpack
+    //安装到你的项目目录
+    npm install --save-dev webpack
+    //自动创建package.json文件
+    npm init
+    //打包命令
+    webpack
+    //使用webpack构建本地服务器
+    npm install --save-dev webpack-dev-server
+    //开启本地服务器
+    npm run serve
+    //一次性安装多个依赖模块，模块之间用空格隔开
+    npm install --save-dev babel-core babel-loader babel-preset-env babel-preset-react
+    //安装React React-DOM
+    npm install --save react react-dom
+    //两个工具处理样式表 css-loader 和 style-loader
+    npm install --save-dev style-loader css-loader
+    //安装postcss-loader 和 autoprefixer（自动添加前缀的插件）
+    npm install --save-dev postcss-loader autoprefixer
+
+    <!-- Webpack 项目文件配置 -->
+    module.exports={
+        <!-- 入口 -->
+        entry:__dirname+"/app/main.js",//唯一入口文件
+        <!-- 输出地址 名字 -->
+        output:{
+            path:__dirname+"/public",//打包后的文件存放的地方
+            filename:"bundle.js"//打包后输出文件的文件名
+        },
+        devServer:{
+            contentBase:"./public",//本地服务器所加载的页面所在的目录
+            historyApiFallback:true,//不跳转
+            inline:true//实时刷新
+        },
+        module:{
+            rules:[
+                {
+                    test:/(\.jsx|\.js)$/,
+                    use:{
+                        loader:"babel-loader",
+                        options:{
+                            presets:[
+                                "env","react"
+                            ]
+                        }
+                    },
+                    exclude:/node_moules/
+                },
+                {
+                    test:/\.css$/,
+                    use:[
+                        {
+                            loader:"style-loader"
+                        },
+                        {
+                            loader:"css-loader",
+                        },
+                        {
+                            loader:"postcss-loader"
+                        }
+                    ]
+                }
+            ]
+        },
+        plugins:[
+            // new webpack.BannerPlugin('版权所有，翻版必究'),
+            <!-- 热更新 -->
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.optimize.UglifyJsPlugin()//压缩代码
+        ]
+    };
+</body>
+</html>
